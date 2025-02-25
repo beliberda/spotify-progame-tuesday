@@ -1,0 +1,20 @@
+button {
+    cursor: pointer;
+}
+
+.icon {
+    background: none;
+    border: none;
+    outline: none;
+
+
+    path {
+        transition: 0.1s all;
+    }
+
+    &:active {
+        path {
+            fill: green;
+        }
+    }
+}
