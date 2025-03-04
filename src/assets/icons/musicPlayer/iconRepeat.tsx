@@ -1,4 +1,4 @@
-export default function IconNext() {
+export default function IconRepeat() {
   return (
     <svg
       width="20"
