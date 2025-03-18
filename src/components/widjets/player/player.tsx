@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { MouseEvent, useEffect, useRef, useState } from "react";
 
 import { ButtonIcon } from "@/components/shared/ui/Buttons/buttons";
 import s from "./style.module.css";
@@ -16,6 +16,8 @@ import IconHeart from "@/assets/icons/musicPlayer/iconHeart";
 
 import preview from "@assets/images/previewPlayer.png";
 import axios from "axios";
+import { formatTime } from "@/components/shared/utils/formatTime";
+import IconPause from "@/assets/icons/musicPlayer/iconPause";
 
 interface IMusicData {
   id: number;
@@ -31,6 +33,10 @@ interface IMusicData {
 export default function Player() {
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [musicData, setMusicData] = useState<IMusicData | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
 
   const musicRef = useRef<HTMLAudioElement>(null);
 
@@ -51,15 +57,50 @@ export default function Player() {
 
   const handlePlay = () => {
     if (!musicRef.current) return;
-    musicRef.current.play();
+    if (isPlaying) {
+      musicRef.current.pause();
+      setIsPlaying(() => false);
+    } else {
+      musicRef.current.play();
+      setIsPlaying(() => true);
+    }
+    console.log(musicRef);
   };
   // TODO добавить переменную useState isPlaying, в функции handlePlay сделать проверку, если isPlaying === true, то остановить музыку через метод pause(), если false то запустить
   useEffect(() => {
     getMusicData();
   }, []);
 
+  useEffect(() => {
+    const audio = musicRef.current;
+    if (audio) {
+      audio.addEventListener("timeupdate", () => {
+        setCurrentTime(audio.currentTime);
+      });
+      audio.addEventListener("loadedmetadata", () => {
+        setDuration(audio.duration);
+      });
+    }
+    return () => {
+      if (audio) {
+        audio.removeEventListener("timeupdate", () => {});
+        audio.removeEventListener("loadedmetadata", () => {});
+      }
+    };
+  }, []);
+
   const handleChangePreview = (bool: boolean) => {
     setIsPreviewOpen(bool);
+  };
+
+  const onSeek = (event: MouseEvent<HTMLDivElement>) => {
+    const audio = musicRef.current;
+    if (audio) {
+      const timelineWidth = event.currentTarget.offsetWidth;
+      const clickPosition = event.nativeEvent.offsetX;
+      const seekTime = (clickPosition / timelineWidth) * audio.duration;
+      audio.currentTime = seekTime;
+    }
   };
 
   return (
@@ -92,16 +133,22 @@ export default function Player() {
         <div className={s.center_top}>
           <ButtonIcon icon={<IconRandom />} />
           <ButtonIcon icon={<IconPrev />} />
-          <ButtonIcon handleClick={handlePlay} icon={<IconPlay />} />
+          <ButtonIcon
+            handleClick={handlePlay}
+            icon={isPlaying ? <IconPause /> : <IconPlay />}
+          />
           <ButtonIcon icon={<IconNext />} />
           <ButtonIcon icon={<IconRepeat />} />
         </div>
         <div className={s.center_bottom}>
-          <p>2:34</p>
-          <div className={s.progress_bar}>
-            <div className={s.progress}></div>
+          <p>{formatTime(currentTime)}</p>
+          <div onClick={onSeek} className={s.progress_bar}>
+            <div
+              style={{ width: (currentTime / duration) * 100 + "%" }}
+              className={s.progress}
+            ></div>
           </div>
-          <p>{musicData?.duration}</p>
+          <p>{formatTime(duration)}</p>
         </div>
       </section>
       <section className={s.right}>

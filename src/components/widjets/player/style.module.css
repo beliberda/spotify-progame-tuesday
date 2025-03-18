@@ -40,6 +40,7 @@
     display: flex;
     align-items: center;
     gap: 32px;
+    width: 276px;
 
     img {
         width: 72px;
@@ -86,6 +87,7 @@
     height: 5px;
     background: rgba(255, 255, 255, 0.5);
     border-radius: 4px;
+    cursor: pointer;
 }
 
 .progress {
@@ -95,4 +97,7 @@
     background: white;
 }
 
-.right {}
+.right {
+    display: flex;
+    gap: 15px;
+}
