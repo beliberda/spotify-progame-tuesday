@@ -1,4 +1,4 @@
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
 
 import { ButtonIcon } from "@/components/shared/ui/Buttons/buttons";
 import s from "./style.module.css";
@@ -13,11 +13,10 @@ import IconQueue from "@/assets/icons/musicPlayer/iconQueue";
 import IconVolume from "@/assets/icons/musicPlayer/iconVolume";
 import IconFullScreen from "@/assets/icons/musicPlayer/iconFullScreen";
 import IconHeart from "@/assets/icons/musicPlayer/iconHeart";
-
-import preview from "@assets/images/previewPlayer.png";
 import axios from "axios";
 import { formatTime } from "@/components/shared/utils/formatTime";
 import IconPause from "@/assets/icons/musicPlayer/iconPause";
+import IconMute from "@/assets/icons/musicPlayer/iconMute";
 
 interface IMusicData {
   id: number;
@@ -31,12 +30,17 @@ interface IMusicData {
 }
 
 export default function Player() {
+  // Превьюшка
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
+  // данные музыки
   const [musicData, setMusicData] = useState<IMusicData | null>(null);
-  const [progress, setProgress] = useState(0);
+  // перемотка и время
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  // Звук
+  const [volume, setVolume] = useState(1);
+  const [isMute, setIsMute] = useState(false);
 
   const musicRef = useRef<HTMLAudioElement>(null);
 
@@ -64,13 +68,10 @@ export default function Player() {
       musicRef.current.play();
       setIsPlaying(() => true);
     }
-    console.log(musicRef);
   };
-  // TODO добавить переменную useState isPlaying, в функции handlePlay сделать проверку, если isPlaying === true, то остановить музыку через метод pause(), если false то запустить
   useEffect(() => {
     getMusicData();
   }, []);
-
   useEffect(() => {
     const audio = musicRef.current;
     if (audio) {
@@ -101,6 +102,20 @@ export default function Player() {
       const seekTime = (clickPosition / timelineWidth) * audio.duration;
       audio.currentTime = seekTime;
     }
+  };
+
+  const handleVolumChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const audio = musicRef.current;
+    if (!audio || !event.currentTarget) return;
+    audio.volume = Number(event.currentTarget.value);
+  };
+
+  const handleChangeMute = () => {
+    const audio = musicRef.current;
+    if (!audio) return;
+
+    setIsMute((prevState) => !prevState);
+    audio.muted = !audio.muted;
   };
 
   return (
@@ -153,7 +168,22 @@ export default function Player() {
       </section>
       <section className={s.right}>
         <ButtonIcon icon={<IconQueue />} />
-        <ButtonIcon icon={<IconVolume />} />
+
+        <div className={s.volume_wrapper}>
+          <ButtonIcon
+            handleClick={handleChangeMute}
+            icon={isMute ? <IconMute /> : <IconVolume />}
+          />
+          <input
+            className={s.volume}
+            onInput={handleVolumChange}
+            type="range"
+            min={0}
+            max={1}
+            step={0.01}
+          />
+        </div>
+
         <ButtonIcon icon={<IconFullScreen />} />
       </section>
       <audio ref={musicRef} src={musicData?.url}></audio>

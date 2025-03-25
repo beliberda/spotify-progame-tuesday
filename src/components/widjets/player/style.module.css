@@ -101,3 +101,55 @@
     display: flex;
     gap: 15px;
 }
+
+.volume_wrapper {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    width: 157px;
+}
+
+.volume {
+    max-width: 120px;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 5px;
+    border-radius: 4px;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+
+    /* для хрома */
+    &::-webkit-slider-runnable-track {
+        appearance: none;
+        -webkit-appearance: none;
+        border-radius: 4px;
+        height: 5px;
+        width: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+    &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        appearance: none;
+        background: green;
+        border-radius: 50%;
+        height: 100%;
+        aspect-ratio: 1/1;
+
+    }
+
+    /* для firefox */
+
+    &::-moz-range-progress {
+        appearance: none;
+        -webkit-appearance: none;
+        border-radius: 4px;
+        height: 5px;
+        background: white;
+    }
+
+    &::-moz-range-thumb {
+        width: 4px;
+        height: 4px;
+    }
+}
