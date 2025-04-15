@@ -2,7 +2,13 @@ import PlayListItem from "@/components/widjets/playList/playListItem/playListIte
 import s from "./style.module.css";
 import clock from "@/assets/icons/other/clock.svg";
 
-const PlayList = () => {
+import { Fragment } from "react";
+
+interface PlayListProps {
+  musicList: any[];
+}
+
+const PlayList = ({ musicList }: PlayListProps) => {
   return (
     <table>
       <thead>
@@ -17,9 +23,14 @@ const PlayList = () => {
         </tr>
       </thead>
       <tbody>
-        <PlayListItem />
-        <PlayListItem />
-        <PlayListItem />
+        {musicList.length !== 0 &&
+          musicList.map((item, i) => {
+            return (
+              <Fragment key={i}>
+                <PlayListItem index={i + 1} item={item} />
+              </Fragment>
+            );
+          })}
       </tbody>
     </table>
   );
