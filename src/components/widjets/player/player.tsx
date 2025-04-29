@@ -1,4 +1,11 @@
-import { ChangeEvent, MouseEvent, useEffect, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FC,
+  MouseEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 
 import { ButtonIcon } from "@/components/shared/ui/Buttons/buttons";
 import s from "./style.module.css";
@@ -17,23 +24,17 @@ import axios from "axios";
 import { formatTime } from "@/components/shared/utils/formatTime";
 import IconPause from "@/assets/icons/musicPlayer/iconPause";
 import IconMute from "@/assets/icons/musicPlayer/iconMute";
+import { IMusicData } from "@/interfaces/interfaces";
+import PlayerStore from "@/stores/PlayerStore";
+import { observer } from "mobx-react-lite";
 
-interface IMusicData {
-  id: number;
-  title: string;
-  artist: string;
-  album: string;
-  duration: number;
-  genre: string[];
-  image: string;
-  url: string;
-}
+const Player: FC = () => {
+  const { currentMusic: musicData } = PlayerStore;
 
-export default function Player() {
   // Превьюшка
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   // данные музыки
-  const [musicData, setMusicData] = useState<IMusicData | null>(null);
+  // const [musicData, setMusicData] = useState<IMusicData | null>(null);
   // перемотка и время
   const [duration, setDuration] = useState(0);
   const [currentTime, setCurrentTime] = useState(0);
@@ -44,20 +45,20 @@ export default function Player() {
 
   const musicRef = useRef<HTMLAudioElement>(null);
 
-  const getMusicData = async () => {
-    axios
-      .get("./api/music_api.json")
-      .then((response) => {
-        console.log(response.data);
-        setMusicData(response.data[0]);
-      })
-      .catch((error) => {
-        console.error("ОшЫбка ПоЛуЧеНиЯ", error);
-      })
-      .finally(() => {
-        console.log("Сработало в любом случае");
-      });
-  };
+  // const getMusicData = async () => {
+  //   axios
+  //     .get("./api/music_api.json")
+  //     .then((response) => {
+  //       console.log(response.data);
+  //       setMusicData(response.data[0]);
+  //     })
+  //     .catch((error) => {
+  //       console.error("ОшЫбка ПоЛуЧеНиЯ", error);
+  //     })
+  //     .finally(() => {
+  //       console.log("Сработало в любом случае");
+  //     });
+  // };
 
   const handlePlay = () => {
     if (!musicRef.current) return;
@@ -69,9 +70,7 @@ export default function Player() {
       setIsPlaying(() => true);
     }
   };
-  useEffect(() => {
-    getMusicData();
-  }, []);
+  useEffect(() => {}, []);
   useEffect(() => {
     const audio = musicRef.current;
     if (audio) {
@@ -88,7 +87,7 @@ export default function Player() {
         audio.removeEventListener("loadedmetadata", () => {});
       }
     };
-  }, []);
+  }, [musicData]);
 
   const handleChangePreview = (bool: boolean) => {
     setIsPreviewOpen(bool);
@@ -189,4 +188,6 @@ export default function Player() {
       <audio ref={musicRef} src={musicData?.url}></audio>
     </div>
   );
-}
+};
+
+export default observer(Player);

@@ -7,18 +7,18 @@
     "year": 2016,
     "genres": ["Rock", "Pop"],
     "duration": "3.07",
-    "image": "./api/music/previewPlayer.png",
-    "url": "./api/music/Имеджин Драгонс- Thunder.mp3"
+    "image": "/api/music/previewPlayer.png",
+    "url": "/api/music/Имеджин Драгонс- Thunder.mp3"
   },
   {
     "id": 2,
-    "title": "Thunder",
+    "title": "Warrior",
     "artist": "Imagine Dragons",
     "album": "Night Visions",
-    "year": 2016,
+    "year": 2010,
     "genres": ["Rock", "Pop"],
     "duration": "3.07",
-    "image": "./api/music/previewPlayer.png",
-    "url": "./api/music/Имеджин Драгонс- Thunder.mp3"
+    "image": "/api/music/previewPlayer.png",
+    "url": "/api/music/djodjo.mp3"
   }
 ]

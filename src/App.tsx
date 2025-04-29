@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import UiKit from "@/pages/uiKit";
 import Main from "@/pages/Main";
 import { SinglePlaylistPage } from "@/pages/SinglePlayListPage";
+import { observer } from "mobx-react-lite";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
   );
 }
 
-export default App;
+export default observer(App);
 
 // Main
 // Login

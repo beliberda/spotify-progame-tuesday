@@ -1,0 +1,29 @@
+.page_wrapper {
+    display: flex;
+    height: 100vh;
+}
+
+.top {
+    height: 200px;
+}
+
+.playlist_wrapper {
+    background: linear-gradient(to bottom, rgb(221, 246, 40), rgb(18, 18, 18));
+    padding: 0 40px;
+    flex-grow: 1;
+    align-self: stretch;
+    display: flex;
+    flex-direction: column;
+
+}
+
+.sidebar {
+    background: rgb(18, 18, 18);
+}
+
+.main {
+    background: rgba(18, 18, 18, 0.5);
+    flex-grow: 1;
+    padding: 0 40px;
+    overflow-y: auto;
+}

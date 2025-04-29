@@ -2,36 +2,30 @@ import { ButtonIcon } from "@/components/shared/ui/Buttons/buttons";
 import s from "./style.module.css";
 import IconHeart from "@/assets/icons/musicPlayer/iconHeart";
 import IconPlay from "@/assets/icons/musicPlayer/iconPlay";
-
-type IPlayListItem = {
-  id: number;
-  title: string;
-  artist: string;
-  album: string;
-  year: number;
-  genres: string[];
-  duration: string;
-  image: string;
-  url: string;
-};
+import { IMusicData } from "@/interfaces/interfaces";
+import PlayerStore from "@/stores/PlayerStore";
 
 interface PlayListItemProps {
-  item: IPlayListItem;
+  item: IMusicData;
   index: number;
 }
 
 const PlayListItem = ({ item, index }: PlayListItemProps) => {
+  const handlePlay = () => {
+    PlayerStore.fetchMusicById(item.id);
+  };
+
   return (
     <tr className={s.wrapper}>
       <td>
         <div className={s.number_wrapper}>
           <p className={s.number}>{index}</p>
-          <ButtonIcon icon={<IconPlay />} />
+          <ButtonIcon handleClick={handlePlay} icon={<IconPlay />} />
         </div>
       </td>
       <td>
         <div className={s.info}>
-          <img src="" className={s.preview} alt="" />
+          <img src={item.image} className={s.preview} alt="" />
 
           <div className={s.name_wrapper}>
             <div className={s.title}>{item.title}</div>
