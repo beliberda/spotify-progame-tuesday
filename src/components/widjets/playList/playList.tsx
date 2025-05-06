@@ -11,7 +11,7 @@ interface PlayListProps {
 
 const PlayList = ({ musicList }: PlayListProps) => {
   return (
-    <table>
+    <table className={s.table}>
       <thead>
         <tr>
           <th>#</th>

@@ -9,3 +9,10 @@ export interface IMusicData {
   image: string;
   url: string;
 }
+
+export interface IPlaylist {
+  id: number;
+  title: string;
+  authorList: string;
+  img: string;
+}
