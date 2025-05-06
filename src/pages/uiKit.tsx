@@ -33,7 +33,6 @@ export default function UiKit() {
       <IconRandom />
       <IconVolume />
       <ButtonIcon icon={<IconPlay />} />
-      <PlayList />
       <Player />
     </div>
   );

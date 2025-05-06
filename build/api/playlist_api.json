@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "title": "My Playlist",
+    "authorList": "John Doe & Jane Smith more...",
+    "img": "/api/music/previewPlayer.png"
+  },
+  {
+    "id": 2,
+    "title": "Бегемот рулит",
+    "authorList": "Слава Ик & Джон Сноу и другие...",
+    "img": "/api/music/previewPlayer.png"
+  }
+]
