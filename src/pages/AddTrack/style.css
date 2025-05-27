@@ -1,0 +1,11 @@
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+    max-width: 600px;
+    border-radius: 30px;
+    border: 1px solid rgba(42, 42, 42, 0.458);
+    padding: 20px;
+    margin: 0 auto;
+}
